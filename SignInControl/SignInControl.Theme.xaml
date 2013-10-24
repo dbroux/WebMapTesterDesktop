@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:WebMapTester"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+    <Style TargetType="{x:Type local:SignInControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:SignInControl}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5,0" VerticalAlignment="Center"
+                                       FontSize="16"
+                                       Text="{Binding ArcGISPortal.CurrentUser.FullName, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Button Margin="5,0,5,0" VerticalAlignment="Center"
+                                    Background="Transparent" BorderThickness="0"
+                                    Command="{Binding SignInCommand, RelativeSource={RelativeSource TemplatedParent}}">
+                                <TextBlock x:Name="label" FontSize="16" />
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSignedIn, RelativeSource={RelativeSource Self}}" Value="True">
+                            <Setter TargetName="label" Property="Text" Value="Sign Out" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSignedIn, RelativeSource={RelativeSource Self}}" Value="False">
+                            <Setter TargetName="label" Property="Text" Value="Sign In" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

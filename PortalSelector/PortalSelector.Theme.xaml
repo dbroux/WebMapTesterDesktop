@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:WebMapTester"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d">
+    <Style TargetType="{x:Type local:PortalSelector}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:PortalSelector}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ComboBox Width="20" DisplayMemberPath="Description"
+                                  ItemsSource="{Binding PortalInfos, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+                                  SelectedItem="{Binding PortalInfo, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                  ToolTip="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PortalInfo.Url}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding Description}" ToolTip="{Binding Url}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            </ComboBox>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

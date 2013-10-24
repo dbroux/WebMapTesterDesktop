@@ -1,0 +1,150 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:WebMapTester"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:portal="clr-namespace:Esri.ArcGISRuntime.Portal;assembly=Esri.ArcGISRuntime"
+                    mc:Ignorable="d">
+
+    <Style x:Key="PortalItemSelectorStyle" TargetType="{x:Type ListBox}">
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid Width="300" d:DataContext="{d:DesignInstance portal:ArcGISPortalItem}">
+                        <Grid.Resources>
+                            <local:HtmlToTextConverter x:Key="HtmlToTextConverter" />
+                        </Grid.Resources>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Margin="5,5,5,0"
+                                   FontSize="12" Text="{Binding Title}"
+                                   TextTrimming="WordEllipsis" TextWrapping="NoWrap" />
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <TextBlock Margin="5,0,0,0" FontSize="10" Text="{Binding Type}" />
+                            <TextBlock Margin="2,0,0,0" FontSize="10" Text="by" />
+                            <TextBlock Margin="2,0,0,0" FontSize="10" Text="{Binding Owner}" />
+                            <TextBlock Margin="2,0,0,0" FontSize="10" Text="(last modified:" />
+                            <TextBlock Margin="2,0,0,0" FontSize="10" Text="{Binding ModificationDate, StringFormat='MMMM dd, yyyy)'}" />
+                        </StackPanel>
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="85" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.RowSpan="2"
+                                  Grid.Column="0" Margin="5, 0, 10, 0">
+                                <Border BorderBrush="Black" BorderThickness="2">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="1" Direction="-45" ShadowDepth="2" />
+                                    </Border.Effect>
+                                    <Image MaxWidth="120" MaxHeight="80" Source="{Binding ThumbnailUri}" />
+                                </Border>
+                            </Grid>
+                            <TextBlock Grid.Row="0" Grid.Column="1"
+                                       Width="235" Height="85"
+                                       Margin="5,5,5,1" FontSize="10"
+                                       Text="{Binding Description, Converter={local:HtmlToTextConverter}}"
+                                       TextTrimming="WordEllipsis" TextWrapping="Wrap" />
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="BusyIndicatorTemplate">
+        <Grid x:Name="BusyIndicator" Background="Transparent" RenderTransformOrigin="0.5,0.5">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Grid.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="0:0:1" RepeatBehavior="Forever"
+                                                 Storyboard.TargetName="BusyIndicator"
+                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                 To="360" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Grid.Triggers>
+
+            <Grid.RenderTransform>
+                <RotateTransform />
+            </Grid.RenderTransform>
+            <Ellipse Width="2" Height="2"
+                     Margin="11,2,11,20" Fill="#1E525252" />
+            <Ellipse Width="3" Height="3"
+                     Margin="0,4,5,0" HorizontalAlignment="Right"
+                     VerticalAlignment="Top" Fill="#3F525252" />
+            <Ellipse Width="4" Height="4"
+                     Margin="0,9,1,0" HorizontalAlignment="Right"
+                     VerticalAlignment="Top" Fill="#7F525252" />
+            <Ellipse Width="5" Height="5"
+                     Margin="0,0,3,3" HorizontalAlignment="Right"
+                     VerticalAlignment="Bottom" Fill="#BF525252" />
+            <Ellipse Width="6" Height="6"
+                     Margin="9,0" VerticalAlignment="Bottom"
+                     Fill="#FF525252" />
+        </Grid>
+    </DataTemplate>
+
+    <Style TargetType="{x:Type local:WebMapSelector}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:WebMapSelector}">
+                    <Border VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid x:Name="LayoutRoot">
+
+                            <ListBox x:Name="PortalItemSelector" VerticalAlignment="Top"
+                                     Background="{TemplateBinding Background}"
+                                     Style="{StaticResource PortalItemSelectorStyle}" />
+
+                            <!--  Busy indicator  -->
+                            <Grid Background="Transparent" Visibility="{Binding Path=IsBusy, RelativeSource={RelativeSource TemplatedParent}, Converter={local:VisibilityConverter}}">
+                                <Grid Background="White" Opacity="0.5" />
+                                <!--  Button allows to cancel the command on click or on escape  -->
+                                <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                        Background="Transparent" BorderBrush="Transparent"
+                                        Command="{Binding CancelCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        IsCancel="True" RenderTransformOrigin="0.5,0.5">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <Grid Background="Transparent">
+                                                <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" ContentTemplate="{StaticResource BusyIndicatorTemplate}">
+                                                    <ContentControl.LayoutTransform>
+                                                        <ScaleTransform ScaleX="2.5" ScaleY="2.5" />
+                                                    </ContentControl.LayoutTransform>
+                                                </ContentControl>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

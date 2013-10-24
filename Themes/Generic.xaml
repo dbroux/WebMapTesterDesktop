@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/WebMapTester;component/WebMapSelector/WebMapSelector.Theme.xaml" />
+        <ResourceDictionary Source="/WebMapTester;component/SignInControl/SignInControl.Theme.xaml" />
+        <ResourceDictionary Source="/WebMapTester;component/PortalSelector/PortalSelector.Theme.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

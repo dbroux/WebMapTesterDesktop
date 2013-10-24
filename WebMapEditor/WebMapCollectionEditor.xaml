@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="WebMapTester.WebMapCollectionEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:WebMapTester"
+             xmlns:webMap="clr-namespace:Esri.ArcGISRuntime.WebMap;assembly=Esri.ArcGISRuntime"
+             d:DesignHeight="300" d:DesignWidth="300"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ChildTemplate">
+            <StackPanel Orientation="Horizontal" d:DataContext="{d:DesignInstance webMap:WebMapObject}">
+                <Button Click="RemoveWebMapObject" Style="{DynamicResource DeleteButtonStyle}" ToolTip="Remove from collection" />
+                <Button VerticalAlignment="Center" Click="ShowDetails"
+                        Style="{DynamicResource PropertyButtonStyle}"
+                        ToolTip="Show details" />
+                <StackPanel DataContext="{Binding Converter={local:ObjectWithIdConverter}}" Orientation="Horizontal">
+                    <TextBlock Margin="1" VerticalAlignment="Center" Text="{Binding IdName, StringFormat='\{0\}:'}" />
+                    <TextBox MinWidth="80" Margin="1"
+                             VerticalAlignment="Center"
+                             Text="{Binding Path=Id, Mode=TwoWay}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <Grid d:DataContext="{d:DesignInstance local:WebMapCollectionEditor}">
+        <Grid Background="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Margin="0,2" VerticalAlignment="Center"
+                       FontWeight="Bold" Text="{Binding Title}"
+                       ToolTip="{Binding Title}" />
+            <Separator VerticalAlignment="Bottom" BorderBrush="Black" BorderThickness="1" />
+
+            <StackPanel Grid.Row="1" Orientation="Vertical">
+                <StackPanel Margin="2" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding InstanceLabel, StringFormat='Collection of \{0\}: '}" />
+                    <Button Click="NewChild" Style="{DynamicResource AddButtonStyle}">
+                        <Button.ToolTip>
+                            <ToolTip Content="{Binding InstanceLabel}" ContentStringFormat="Add new {0}" />
+                        </Button.ToolTip>
+                    </Button>
+                    <Button Click="ClearCollection" Style="{DynamicResource DeleteButtonStyle}" ToolTip="Clear collection" />
+                </StackPanel>
+                <ListBox ItemTemplate="{StaticResource ChildTemplate}" ItemsSource="{Binding WebMapObjects}" />
+            </StackPanel>
+
+            <Separator Grid.Row="2" VerticalAlignment="Top"
+                       BorderBrush="Black" BorderThickness="1" />
+            <Button Grid.Row="2" Margin="100,5"
+                    HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Click="Cancel" Content="Done" />
+        </Grid>
+        <local:WebMapObjectEditor x:Name="webMapObjectEditor" Visibility="Collapsed" />
+
+    </Grid>
+</UserControl>
