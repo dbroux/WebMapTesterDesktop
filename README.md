@@ -8,7 +8,7 @@ This application contains a webmap browser and a webmap editor using the ArcGIS 
 
 * Search webmaps
 * Display Webmaps using .Net API
-* Display Webmaps using portal viewer (for comparaison)
+* Display Webmaps using portal viewer (for comparison)
 * Edit webmaps using a raw WebMapObjects editor
 * Save current webmap on portal
 * Manage portal Sign-In
