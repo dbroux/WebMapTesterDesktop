@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -120,13 +121,22 @@ namespace WebMapTester
 			}
 			else
 			{
-				var throttleTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
-				throttleTimer.Tick += (s, ev) =>
-				{
-					throttleTimer.Stop();
+				if (map.SpatialReference != null)
 					map.ZoomTo(extent);
-				};
-				throttleTimer.Start();
+				else
+				{
+					PropertyChangedEventHandler handler = null;
+					handler = delegate(object sender, PropertyChangedEventArgs args)
+						          {
+							          var m = sender as Map;
+							          if (m != null && args.PropertyName == "SpatialReference")
+							          {
+								          m.PropertyChanged -= handler;
+								          m.ZoomTo(extent);
+							          }
+						          };
+					map.PropertyChanged += handler;
+				}
 			}
 		}
 

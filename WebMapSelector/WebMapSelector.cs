@@ -336,7 +336,7 @@ namespace WebMapTester
 		private void ShowError(string message)
 		{
 			IsBusy = false;
-			MessageBox.Show(message);
+			MessageBox.Show(message, null, MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 
 		private void ShowLoadErrors(IEnumerable<KeyValuePair<WebMapLayer, Exception>> loadErrors)
