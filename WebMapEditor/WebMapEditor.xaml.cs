@@ -17,7 +17,7 @@ namespace WebMapTester
 		}
 
 
-		// Private methods for adding/removing operationla layers or basemap layers
+		// Private methods for adding/removing operational layers or basemap layers
 		private void RemoveWebMapLayer(object sender, RoutedEventArgs e)
 		{
 			var webMapViewModel = DataContext as WebMapViewModel;
