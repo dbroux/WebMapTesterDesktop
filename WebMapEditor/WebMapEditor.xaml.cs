@@ -109,7 +109,7 @@ namespace WebMapTester
 			webMapLayerDetail.WebMapObject = webMapLayer;
 
 			var webMapViewModel = DataContext as WebMapViewModel;
-			string title = webMapViewModel != null && webMapViewModel.OperationalLayers.Contains(webMapLayer)
+			string title = webMapViewModel != null && webMapViewModel.OperationalLayers != null && webMapViewModel.OperationalLayers.Contains(webMapLayer)
 				               ? "WebMap \u2011>OperationalLayers[]"
 				               : "WebMap \u2011>BaseMap \u2011>Layers[]";
 			webMapLayerDetail.Title = title;

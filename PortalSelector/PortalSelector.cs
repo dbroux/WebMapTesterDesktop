@@ -25,6 +25,7 @@ namespace WebMapTester
 				new PortalInfo("http://nation.maps.arcgis.com/sharing/rest"),
 				new PortalInfo("http://demoesrifrance2.maps.arcgis.com/sharing/rest"),
 				new PortalInfo("http://clancy.maps.arcgis.com/sharing/rest"),
+				new PortalInfo("https://serverlinux.esri.com/arcgis/sharing/rest", "LDAP Server linux"),
 			};
 
 		public PortalSelector()

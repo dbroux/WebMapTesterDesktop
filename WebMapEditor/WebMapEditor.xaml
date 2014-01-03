@@ -58,12 +58,12 @@
         </Style>
         <DataTemplate x:Key="LayerTemplate">
             <StackPanel Orientation="Horizontal" d:DataContext="{d:DesignInstance webMap:WebMapLayer}">
-                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Visibility, Mode=TwoWay}" ToolTip="Visibility" />
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsVisible, Mode=TwoWay}" ToolTip="WebMap Layer Visibility" />
                 <Slider Width="30" VerticalAlignment="Center"
                         Maximum="1" Minimum="0"
                         Value="{Binding Opacity, Mode=TwoWay}" />
                 <Button Click="RemoveWebMapLayer" Style="{StaticResource DeleteButtonStyle}" ToolTip="Remove webmap layer" />
-                <Button VerticalAlignment="Center" Click="ShowDetails"
+                <Button Click="ShowDetails"
                         Style="{StaticResource PropertyButtonStyle}"
                         ToolTip="Show details" />
                 <TextBox MinWidth="50" Margin="1"
@@ -85,10 +85,10 @@
                         <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="BaseLayers: " />
                         <TextBox MinWidth="30" VerticalAlignment="Center" Text="{Binding BaseMap.Title, Mode=TwoWay}" />
                         <Button Click="NewBaseMapLayer" Style="{StaticResource AddButtonStyle}" ToolTip="Add new BaseMap Layer" />
-                        <Button Click="ClearBaseMapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Clear BaseMap layers" />
-                        <!-- ResetBaseMapLayers and ResetBaseMap useful to test WebMapViewModel but don't bring any nex functionality -->
-                        <!--<Button Click="ResetBaseMapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Set BaseMap.Layers to null" />
-                        <Button Click="ResetBaseMap" Style="{StaticResource DeleteButtonStyle}" ToolTip="Set BaseMap to null" />-->
+                        <Button Click="ResetBaseMapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Reset BaseMap.Layers" />
+                        <!-- ClearBaseMapLayers and ResetBaseMap useful to test WebMapViewModel but don't bring any new functionality -->
+                        <!--<Button Click="ClearBaseMapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Clear BaseMap layers" />
+                        <Button Click="ResetBaseMap" Style="{StaticResource DeleteButtonStyle}" ToolTip="Reset BaseMap" />-->
                     </StackPanel>
                     <ListBox ItemTemplate="{StaticResource LayerTemplate}" ItemsSource="{Binding BaseMap.Layers}" />
                     
@@ -96,8 +96,8 @@
                     <StackPanel Margin="2" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="OperationalLayers" />
                         <Button Click="NewOperationalLayer" Style="{StaticResource AddButtonStyle}" ToolTip="Add new Operational Layer" />
-                        <Button Click="ClearOperationalLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Clear operational layers" />
-                        <!--<Button Click="ResetOperationalLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Set operational layers to null" />-->
+                        <!--<Button Click="ClearOperationalLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Clear operational layers" />-->
+                        <Button Click="ResetOperationalLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Reset operational layers" />
                     </StackPanel>
                     <ListBox ItemTemplate="{StaticResource LayerTemplate}" ItemsSource="{Binding OperationalLayers}" />
                 </StackPanel>

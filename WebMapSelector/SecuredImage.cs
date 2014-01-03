@@ -67,13 +67,14 @@ namespace WebMapTester
 		private async Task UpdateImageSource()
 		{
 			ImageSource source;
-			if (HttpMessageHandler == null || ImageUri == null)
+			if (ImageUri == null)
 				source = null;
 			else
 			{
 				try
 				{
-					var httpClient = new ArcGISHttpClient(HttpMessageHandler);
+					//var httpClient = ArcGISHttpClient.CreateHttpClient(ImageUri);
+					var httpClient = HttpMessageHandler == null ? new ArcGISHttpClient() :new ArcGISHttpClient(HttpMessageHandler);
 
 					Stream streamSource = await httpClient.GetStreamAsync(ImageUri);
 					var bitmapImage = new BitmapImage();

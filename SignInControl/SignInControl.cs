@@ -183,7 +183,7 @@ namespace WebMapTester
 			if (serverInfo != null && serverInfo.TokenAuthenticationType != IdentityManager.TokenAuthenticationType.ArcGISToken)
 			{
 				// OAuth2 case --> call generateToken which will show up the authorization page
-				return im.GenerateTokenAsync(info.ServiceUri, info.GenerateTokenOptions);
+				return im.GenerateCredentialAsync(info.ServiceUri, info.GenerateTokenOptions).ContinueWith(t => (IdentityManager.Credential)t.Result);
 			}
 			else
 			{

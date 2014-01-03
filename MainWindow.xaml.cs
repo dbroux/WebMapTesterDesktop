@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -35,18 +36,22 @@ namespace WebMapTester
 
 				var serverInfo = im.FindServerInfo(info.ServiceUri);
 
-				// Portal and federated servers can't be accessed on the fly. The Credential must be set by the 'SignIn' process
-				if (serverInfo != null && !string.IsNullOrEmpty(serverInfo.OwningSystemUri))
+				bool needPortalToken = info.AuthenticationType == IdentityManager.AuthenticationType.Token && serverInfo != null && !string.IsNullOrEmpty(serverInfo.OwningSystemUri);
+				if (needPortalToken)
 				{
-					var tcs = new TaskCompletionSource<IdentityManager.Credential>();
-					tcs.SetException(new Exception("You have no access to this resource."));
-					return tcs.Task;
+					// Don't change portal login on the fly. The user has to log out first.
+					var crd = im.FindCredential(info.ServiceUri);
+					if (crd != null) // already logged
+					{
+						var tcs = new TaskCompletionSource<IdentityManager.Credential>();
+						// We are logged but have no access to this resource
+						tcs.SetException(new Exception("You have no access to this resource."));
+						return tcs.Task;
+					}
 				}
-				else
-				{
-					// Use the Toolkit SignInDialog
-					return SignInDialog.DoSignIn(info);
-				}
+
+				// Use the Toolkit SignInDialog
+				return SignInDialog.DoSignIn(info);
 			};
 		}
 
