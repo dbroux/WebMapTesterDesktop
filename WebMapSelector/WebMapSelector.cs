@@ -59,7 +59,7 @@ namespace WebMapTester
 					                                     (IActiveCommand) SelectBaseMapCommand,
 					                                     (IActiveCommand) SaveAsCommand,
 					                                     (IActiveCommand) NewWebMapCommand,
-					                                     (IActiveCommand) BackToResultsCommand,
+					                                     (IActiveCommand) BackToResultsCommand
 				                                     });
 			ShowWebMapCommand = new ShowWebMapCommandImpl(this);
 
@@ -652,7 +652,7 @@ namespace WebMapTester
 				string title = string.Format("{0}'s WebMap for testing (can be deleted)", _webMapSelector.ArcGISPortal.CurrentUser.FullName);
 				ArcGISPortal portal = webMapViewModel.ArcGISPortal;
 				string json = webMapViewModel.WebMap.ToJson();
-				Envelope extent = webMapViewModel.InitialExtent;
+				Envelope extent = webMapViewModel.Map.InitialExtent;
 				if (extent != null && !SpatialReference.AreEqual(SpatialReferences.Wgs84, extent.SpatialReference))
 				{
 					extent = GeometryEngine.Project(extent, SpatialReferences.Wgs84) as Envelope;

@@ -12,12 +12,12 @@
         <!--  Define the Legend implicit style that will be used in this page  -->
         <Style TargetType="esritoolkit:Legend">
             <Setter Property="ShowOnlyVisibleLayers" Value="False" />
-            
-            <!-- LayerLegendTemplate = template for a layer legend -->
+
+            <!--  LayerLegendTemplate = template for a layer legend  -->
             <Setter Property="LayerTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="0,4">
+                        <StackPanel Margin="0,4" Orientation="Horizontal">
                             <ToolTipService.ToolTip>
                                 <StackPanel MaxWidth="400">
                                     <TextBlock FontWeight="Bold" Text="{Binding ParentLabel}" TextWrapping="Wrap" />
@@ -27,15 +27,15 @@
                                     <TextBlock Text="{Binding MaximumScale, StringFormat='MaximumScale 1:{0}'}" TextWrapping="Wrap" />
                                 </StackPanel>
                             </ToolTipService.ToolTip>
-                            <CheckBox IsChecked="{Binding IsVisible, Mode=OneWay}" IsEnabled="False"/>
-                            <TextBlock Text="{Binding Label}" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <CheckBox IsChecked="{Binding IsVisible, Mode=OneWay}" IsEnabled="False" />
+                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Label}" />
                         </StackPanel>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
 
-            <!-- Will use LayerItemTemplate -->
-            <Setter Property="MapLayerTemplate" Value="{x:Null}"/>
+            <!--  Will use LayerItemTemplate  -->
+            <Setter Property="MapLayerTemplate" Value="{x:Null}" />
         </Style>
 
     </Window.Resources>
@@ -53,12 +53,7 @@
         <local:Toolbar DataContext="{Binding ElementName=mainWindow}" />
 
         <Grid Grid.Row="1">
-
-            <esri:Map x:Name="MyMap" 
-                      Layers="{Binding WebMapViewModel.Layers}" WrapAround="True" 
-                      local:MainWindow.MapInitialExtent="{Binding WebMapViewModel.InitialExtent}"/>
-            <!--InitialExtent="{Binding WebMapViewModel.InitialExtent, Mode=OneWay}" todo not working for now-->
-
+            <esri:MapView Map="{Binding WebMapViewModel.Map}" WrapAround="True" />
 
             <local:WebMapEditor x:Name="webMapEditor" Width="300"
                                 Margin="3,20,3,3" HorizontalAlignment="Right"
@@ -73,12 +68,14 @@
                     BorderThickness="2" CornerRadius="5"
                     Padding="2" Visibility="Collapsed">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <esritoolkit:Legend Layers="{Binding Layers, ElementName=MyMap}" Scale="{Binding Scale, ElementName=MyMap}" />
+                    <esritoolkit:Legend Layers="{Binding WebMapViewModel.Map.Layers}" Scale="{Binding WebMapViewModel.Map.Scale}" />
                 </ScrollViewer>
             </Border>
-            <esritoolkit:Attribution Layers="{Binding Layers, ElementName=MyMap}" VerticalAlignment="Bottom" HorizontalAlignment="Right"></esritoolkit:Attribution>
+            <esritoolkit:Attribution HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                     Layers="{Binding WebMapViewModel.Map.Layers}"
+                                     Scale="{Binding WebMapViewModel.Map.Scale}" />
 
-            <local:WebMapSelector x:Name="webMapSelector" Background="White" 
+            <local:WebMapSelector x:Name="webMapSelector" Background="White"
                                   BingToken="{Binding BingToken}" Foreground="Black"
                                   WebMapViewModel="{Binding WebMapViewModel, Mode=TwoWay}" />
         </Grid>
