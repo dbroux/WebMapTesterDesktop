@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Esri.ArcGISRuntime;
 
 namespace WebMapTester
 {
@@ -7,5 +8,9 @@ namespace WebMapTester
 	/// </summary>
 	public partial class App : Application
 	{
+		public App()
+		{
+			ArcGISRuntimeEnvironment.ClientId = "BU5fLQGBRuke1WNw";
+		}
 	}
 }
