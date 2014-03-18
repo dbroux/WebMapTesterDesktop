@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Esri.ArcGISRuntime.Security;
 
 namespace WebMapTester
 {
@@ -16,6 +17,7 @@ namespace WebMapTester
 		private readonly ObservableCollection<PortalInfo> _portals = new ObservableCollection<PortalInfo>
 			{
 				new PortalInfo("http://www.arcgis.com/sharing/rest", "ArcGIS Online"),
+				new PortalInfo("http://www.arcgis.com/sharing/rest", "ArcGIS Online With OAuth", "arcgisoperationsdashboardwindows"),
 				new PortalInfo("http://nitro.maps.arcgis.com/sharing/rest", "Nitro ArcGIS OnLine Organization"),
 				new PortalInfo("http://devext.arcgis.com/sharing/rest"),
 				new PortalInfo("http://dev.arcgis.com/sharing/rest"),
@@ -23,6 +25,7 @@ namespace WebMapTester
 				new PortalInfo("https://portaliwa.esri.com/gis/sharing/rest", "Portal IWA"),
 				new PortalInfo("http://qaext.arcgis.com/sharing/rest"),
 				new PortalInfo("http://nation.maps.arcgis.com/sharing/rest"),
+				new PortalInfo("http://energy.mapsdevext.arcgis.com/sharing/rest", "Energy on devext With OAuth", "oakG4fjoNS74s8SH"),
 				new PortalInfo("http://demoesrifrance2.maps.arcgis.com/sharing/rest"),
 				new PortalInfo("http://clancy.maps.arcgis.com/sharing/rest"),
 				new PortalInfo("https://serverlinux.esri.com/arcgis/sharing/rest", "LDAP Server linux"),
@@ -58,6 +61,29 @@ namespace WebMapTester
 			var portalInfo = e.NewValue as PortalInfo;
 			if (portalInfo != null)
 				Properties.Settings.Default.LastPortalUrl = portalInfo.Url;
+			if (!string.IsNullOrEmpty(portalInfo.OAuthClientId))
+			{
+				// Server needs to be registered to use OAuth
+				IdentityManager.Current.RegisterServer(new IdentityManager.ServerInfo
+				{
+					ServerUri = portalInfo.Url,
+					TokenAuthenticationType = IdentityManager.TokenAuthenticationType.OAuthAuthorizationCode,
+					OAuthClientInfo = new IdentityManager.OAuthClientInfo
+					{
+						ClientId = portalInfo.OAuthClientId,
+						RedirectUri = "urn:ietf:wg:oauth:2.0:oob"
+					}
+				});
+			}
+			else
+			{
+				// Be sure the registered server doesn't use OAuth
+				var serverInfo = IdentityManager.Current.FindServerInfo(portalInfo.Url);
+				if (serverInfo != null)
+				{
+					serverInfo.TokenAuthenticationType = IdentityManager.TokenAuthenticationType.ArcGISToken;
+				}
+			}
 		}
 		
 		#endregion
