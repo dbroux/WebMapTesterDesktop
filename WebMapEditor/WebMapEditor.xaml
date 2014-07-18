@@ -83,14 +83,14 @@
                     <!-- Base Map Layers-->
                     <StackPanel Margin="2" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="BaseLayers: " />
-                        <TextBox MinWidth="30" VerticalAlignment="Center" Text="{Binding BaseMap.Title, Mode=TwoWay}" />
-                        <Button Click="NewBaseMapLayer" Style="{StaticResource AddButtonStyle}" ToolTip="Add new BaseMap Layer" />
-                        <Button Click="ResetBaseMapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Reset BaseMap.Layers" />
-                        <!-- ClearBaseMapLayers and ResetBaseMap useful to test WebMapViewModel but don't bring any new functionality -->
-                        <!--<Button Click="ClearBaseMapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Clear BaseMap layers" />
-                        <Button Click="ResetBaseMap" Style="{StaticResource DeleteButtonStyle}" ToolTip="Reset BaseMap" />-->
+                        <TextBox MinWidth="30" VerticalAlignment="Center" Text="{Binding Basemap.Title, Mode=TwoWay}" />
+                        <Button Click="NewBasemapLayer" Style="{StaticResource AddButtonStyle}" ToolTip="Add new Basemap Layer" />
+                        <Button Click="ResetBasemapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Reset Basemap.Layers" />
+                        <!-- ClearBasemapLayers and ResetBasemap useful to test WebMapViewModel but don't bring any new functionality -->
+                        <!--<Button Click="ClearBasemapLayers" Style="{StaticResource DeleteButtonStyle}" ToolTip="Clear Basemap layers" />
+                        <Button Click="ResetBasemap" Style="{StaticResource DeleteButtonStyle}" ToolTip="Reset Basemap" />-->
                     </StackPanel>
-                    <ListBox ItemTemplate="{StaticResource LayerTemplate}" ItemsSource="{Binding BaseMap.Layers}" />
+                    <ListBox ItemTemplate="{StaticResource LayerTemplate}" ItemsSource="{Binding Basemap.Layers}" />
                     
                     <!-- Operational Layers-->
                     <StackPanel Margin="2" Orientation="Horizontal">

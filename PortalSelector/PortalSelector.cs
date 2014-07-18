@@ -17,6 +17,7 @@ namespace WebMapTester
 		private readonly ObservableCollection<PortalInfo> _portals = new ObservableCollection<PortalInfo>
 			{
 				new PortalInfo("http://www.arcgis.com/sharing/rest", "ArcGIS Online"),
+				new PortalInfo("https://www.arcgis.com/sharing/rest", "ArcGIS Online SSL"),
 				new PortalInfo("http://www.arcgis.com/sharing/rest", "ArcGIS Online With OAuth", "arcgisoperationsdashboardwindows"),
 				new PortalInfo("http://nitro.maps.arcgis.com/sharing/rest", "Nitro ArcGIS OnLine Organization"),
 				new PortalInfo("http://devext.arcgis.com/sharing/rest"),

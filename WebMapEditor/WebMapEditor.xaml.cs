@@ -26,8 +26,8 @@ namespace WebMapTester
 				return;
 			if (webMapViewModel.OperationalLayers != null && webMapViewModel.OperationalLayers.Contains(webMapLayer))
 				webMapViewModel.OperationalLayers.Remove(webMapLayer);
-			if (webMapViewModel.BaseMap != null && webMapViewModel.BaseMap.Layers != null && webMapViewModel.BaseMap.Layers.Contains(webMapLayer))
-				webMapViewModel.BaseMap.Layers.Remove(webMapLayer);
+			if (webMapViewModel.Basemap != null && webMapViewModel.Basemap.Layers != null && webMapViewModel.Basemap.Layers.Contains(webMapLayer))
+				webMapViewModel.Basemap.Layers.Remove(webMapLayer);
 		}
 
 		private void ResetOperationalLayers(object sender, RoutedEventArgs e)
@@ -56,41 +56,41 @@ namespace WebMapTester
 			//ShowDetails(webMapLayer);
 		}
 
-		private void ResetBaseMap(object sender, RoutedEventArgs e)
+		private void ResetBasemap(object sender, RoutedEventArgs e)
 		{
 			var webMapViewModel = DataContext as WebMapViewModel;
 			if (webMapViewModel == null)
 				return;
-			webMapViewModel.BaseMap = null;
+			webMapViewModel.Basemap = null;
 		}
-		private void NewBaseMapLayer(object sender, RoutedEventArgs e)
+		private void NewBasemapLayer(object sender, RoutedEventArgs e)
 		{
 			var webMapViewModel = DataContext as WebMapViewModel;
 			if (webMapViewModel == null)
 				return;
-			if (webMapViewModel.BaseMap == null)
-				webMapViewModel.BaseMap = new BaseMap();
-			if (webMapViewModel.BaseMap.Layers == null)
-				webMapViewModel.BaseMap.Layers = new ObservableCollection<WebMapLayer>();
+			if (webMapViewModel.Basemap == null)
+				webMapViewModel.Basemap = new Basemap();
+			if (webMapViewModel.Basemap.Layers == null)
+				webMapViewModel.Basemap.Layers = new ObservableCollection<WebMapLayer>();
 			var webMapLayer = new WebMapLayer { ShowLegend = false, Type = "OpenStreetMap"};
-			webMapViewModel.BaseMap.Layers.Add(webMapLayer);
+			webMapViewModel.Basemap.Layers.Add(webMapLayer);
 			//ShowDetails(webMapLayer);
 		}
 
-		private void ResetBaseMapLayers(object sender, RoutedEventArgs e)
+		private void ResetBasemapLayers(object sender, RoutedEventArgs e)
 		{
 			var webMapViewModel = DataContext as WebMapViewModel;
-			if (webMapViewModel == null || webMapViewModel.BaseMap == null)
+			if (webMapViewModel == null || webMapViewModel.Basemap == null)
 				return;
-			webMapViewModel.BaseMap.Layers = null;
+			webMapViewModel.Basemap.Layers = null;
 		}
 
-		private void ClearBaseMapLayers(object sender, RoutedEventArgs e)
+		private void ClearBasemapLayers(object sender, RoutedEventArgs e)
 		{
 			var webMapViewModel = DataContext as WebMapViewModel;
-			if (webMapViewModel == null || webMapViewModel.BaseMap == null || webMapViewModel.BaseMap.Layers == null)
+			if (webMapViewModel == null || webMapViewModel.Basemap == null || webMapViewModel.Basemap.Layers == null)
 				return;
-			webMapViewModel.BaseMap.Layers.Clear();
+			webMapViewModel.Basemap.Layers.Clear();
 		}
 
 		// Go down in the hierarchy of a webmaplayer object
@@ -111,7 +111,7 @@ namespace WebMapTester
 			var webMapViewModel = DataContext as WebMapViewModel;
 			string title = webMapViewModel != null && webMapViewModel.OperationalLayers != null && webMapViewModel.OperationalLayers.Contains(webMapLayer)
 				               ? "WebMap \u2011>OperationalLayers[]"
-				               : "WebMap \u2011>BaseMap \u2011>Layers[]";
+				               : "WebMap \u2011>Basemap \u2011>Layers[]";
 			webMapLayerDetail.Title = title;
 		}
 	}

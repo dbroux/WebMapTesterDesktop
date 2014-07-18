@@ -1,15 +1,12 @@
-﻿using System;
-using System.ComponentModel;
-using System.Net;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Threading;
+﻿using System.Windows.Data;
 using Esri.ArcGISRuntime.Controls;
-using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Security;
 using Esri.ArcGISRuntime.Toolkit.Controls;
 using Esri.ArcGISRuntime.WebMap;
+using System;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace WebMapTester
 {
@@ -93,58 +90,6 @@ namespace WebMapTester
 		}
 
 
-		//// Attached Property  for initializing initial extent and SR of a map from WebMapViewModel
-		//// That's a temporary workaround, new .net API is supposed to manage that internally
-		//public static Envelope GetMapInitialExtent(DependencyObject obj)
-		//{
-		//	return (Envelope)obj.GetValue(MapInitialExtentProperty);
-		//}
-
-		//public static void SetMapInitialExtent(DependencyObject obj, Envelope value)
-		//{
-		//	obj.SetValue(MapInitialExtentProperty, value);
-		//}
-
-		//public static readonly DependencyProperty MapInitialExtentProperty =
-		//	DependencyProperty.RegisterAttached("MapInitialExtent", typeof(Envelope), typeof(MainWindow), new PropertyMetadata(OnMapInitialExtentChanged));
-
-		//private static void OnMapInitialExtentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		//{
-		//	var map = d as Map;
-		//	var extent = e.NewValue as Envelope;
-		//	if (map == null || extent == null)
-		//		return;
-
-		//	if (map.SpatialReference != null && !SpatialReference.AreEqual(map.SpatialReference, extent.SpatialReference, true))
-		//	{
-		//		// The SR changes. We need to set a null extent while no layer in map TODO
-		//		//LayerCollection layers = map.Layers;
-		//		//map.Layers = new LayerCollection();
-		//		////map.Extent = null;
-		//		//map.Layers = layers;
-		//		//map.ZoomTo(extent);
-		//	}
-		//	else
-		//	{
-		//		if (map.SpatialReference != null)
-		//			map.ZoomTo(extent);
-		//		else
-		//		{
-		//			PropertyChangedEventHandler handler = null;
-		//			handler = delegate(object sender, PropertyChangedEventArgs args)
-		//						  {
-		//							  var m = sender as Map;
-		//							  if (m != null && args.PropertyName == "SpatialReference")
-		//							  {
-		//								  m.PropertyChanged -= handler;
-		//								  m.ZoomTo(extent);
-		//							  }
-		//						  };
-		//			map.PropertyChanged += handler;
-		//		}
-		//	}
-		//}
-
 
 		/// <summary>
 		/// Command toggling the visibility of an UI Element
@@ -169,6 +114,22 @@ namespace WebMapTester
 			{
 				IsActive = _element.Visibility == Visibility.Visible;
 			}
+		}
+
+		private void RemoveBinding_OnClick(object sender, RoutedEventArgs e)
+		{
+			BindingOperations.ClearBinding(MyMapView, MapView.MinScaleProperty);
+			BindingOperations.ClearBinding(MyMapView, MapView.MaxScaleProperty);
+			MyMapView.MinScale = 0.0;// double.NaN;
+			MyMapView.MaxScale = 0.0; // double.NaN;
+		}
+
+		private void SetBinding_OnClick(object sender, RoutedEventArgs e)
+		{
+			var binding = new Binding("WebMapViewModel.RecommendedMinScale");
+			MyMapView.SetBinding(MapView.MinScaleProperty, binding);
+			var binding2 = new Binding("WebMapViewModel.RecommendedMaxScale");
+			MyMapView.SetBinding(MapView.MaxScaleProperty, binding2);
 		}
 
 	}

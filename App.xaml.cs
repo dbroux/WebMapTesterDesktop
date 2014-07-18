@@ -10,7 +10,7 @@ namespace WebMapTester
 	{
 		public App()
 		{
-			ArcGISRuntimeEnvironment.ClientId = "BU5fLQGBRuke1WNw";
+			//ArcGISRuntimeEnvironment.ClientId = "BU5fLQGBRuke1WNw";
 		}
 	}
 }

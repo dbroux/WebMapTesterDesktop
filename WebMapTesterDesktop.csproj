@@ -39,7 +39,8 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\WebMapTester.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -60,9 +61,10 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>bin\Debug\WebMapTester.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -78,6 +80,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Esri.ArcGISRuntime, Version=10.2.4.0, Culture=neutral, PublicKeyToken=402f1553d5c332e7, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
@@ -222,14 +225,9 @@
     <Resource Include="Images\WebMap32.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Applications\DotNet\WinDesktop\API\Esri.ArcGISRuntime\Esri.ArcGISRuntime.csproj">
-      <Project>{0fc7b6ae-7a1d-4c31-8ee6-0d80f6acb13e}</Project>
-      <Name>Esri.ArcGISRuntime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\arcgis-toolkit-dotnet\src\WinDesktop\Esri.ArcGISRuntime.Toolkit\Esri.ArcGISRuntime.Toolkit.csproj">
-      <Project>{1e83c102-5c9d-4a6c-b5b8-9a9202249262}</Project>
-      <Name>Esri.ArcGISRuntime.Toolkit</Name>
-      <Private>True</Private>
+    <ProjectReference Include="..\..\arcgis-toolkit-dotnet\src\WinDesktop\Esri.ArcGISRuntime.Toolkit\Esri.ArcGISRuntime.Toolkit.WindowsDesktop.csproj">
+      <Project>{1642b9a3-da5c-47fd-a87b-25c8db517261}</Project>
+      <Name>Esri.ArcGISRuntime.Toolkit.WindowsDesktop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

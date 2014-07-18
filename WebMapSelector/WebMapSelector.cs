@@ -14,6 +14,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Esri.ArcGISRuntime.Controls;
 using Esri.ArcGISRuntime.Geometry;
 using Esri.ArcGISRuntime.Portal;
 using Esri.ArcGISRuntime.Security;
@@ -28,7 +29,7 @@ namespace WebMapTester
 		private ICommand _newWebMapCommand;
 		private ICommand _cancelCommand;
 		private ICommand _selectWebMapCommand;
-		private ICommand _selectBaseMapCommand;
+		private ICommand _selectBasemapCommand;
 		private ICommand _backToResultsCommand;
 		private ICommand _saveAsCommand;
 		private ICommand _showWebMapCommand;
@@ -48,7 +49,7 @@ namespace WebMapTester
 				throw new Exception("PortalItemSelector not defined");
 
 			SelectWebMapCommand = new SelectWebMapCommandImpl(this);
-			SelectBaseMapCommand = new SelectBaseMapCommandImpl(this);
+			SelectBasemapCommand = new SelectBasemapCommandImpl(this);
 			SaveAsCommand = new SaveAsCommandImpl(this);
 			NewWebMapCommand = new NewWebMapCommandImpl(this);
 			BackToResultsCommand = new BackToResultsCommandImpl(this);
@@ -56,7 +57,7 @@ namespace WebMapTester
 			_activeCommands = new ActiveCommands(new[]
 				                                     {
 					                                     (IActiveCommand) SelectWebMapCommand,
-					                                     (IActiveCommand) SelectBaseMapCommand,
+					                                     (IActiveCommand) SelectBasemapCommand,
 					                                     (IActiveCommand) SaveAsCommand,
 					                                     (IActiveCommand) NewWebMapCommand,
 					                                     (IActiveCommand) BackToResultsCommand
@@ -234,14 +235,14 @@ namespace WebMapTester
 			}
 		}
 
-		public ICommand SelectBaseMapCommand
+		public ICommand SelectBasemapCommand
 		{
-			get { return _selectBaseMapCommand; }
+			get { return _selectBasemapCommand; }
 			private set
 			{
-				if (_selectBaseMapCommand != value)
+				if (_selectBasemapCommand != value)
 				{
-					_selectBaseMapCommand = value;
+					_selectBasemapCommand = value;
 					OnPropertyChanged();
 				}
 			}
@@ -510,11 +511,11 @@ namespace WebMapTester
 			}
 		}
 
-		internal class SelectBaseMapCommandImpl : ActiveCommand
+		internal class SelectBasemapCommandImpl : ActiveCommand
 		{
 			private readonly WebMapSelector _webMapSelector;
 
-			public SelectBaseMapCommandImpl(WebMapSelector webMapSelector)
+			public SelectBasemapCommandImpl(WebMapSelector webMapSelector)
 			{
 				_webMapSelector = webMapSelector;
 				_webMapSelector.PortalItemSelector.SelectionChanged += PortalItemSelectorOnSelectionChanged;
@@ -609,7 +610,7 @@ namespace WebMapTester
 					var webMap = await WebMap.FromPortalItemAsync(portalItem);
 					if (webMap != null && !cts.IsCancellationRequested)
 					{
-						_webMapSelector.WebMapViewModel.BaseMap = webMap.BaseMap;
+						_webMapSelector.WebMapViewModel.Basemap = webMap.Basemap;
 					}
 				}
 				catch (Exception error)
@@ -652,7 +653,7 @@ namespace WebMapTester
 				string title = string.Format("{0}'s WebMap for testing (can be deleted)", _webMapSelector.ArcGISPortal.CurrentUser.FullName);
 				ArcGISPortal portal = webMapViewModel.ArcGISPortal;
 				string json = webMapViewModel.WebMap.ToJson();
-				Envelope extent = webMapViewModel.Map.InitialExtent;
+				var extent = webMapViewModel.Map.InitialViewpoint.TargetGeometry as Envelope; // todo manage point and scale case
 				if (extent != null && !SpatialReference.AreEqual(SpatialReferences.Wgs84, extent.SpatialReference))
 				{
 					extent = GeometryEngine.Project(extent, SpatialReferences.Wgs84) as Envelope;
@@ -671,7 +672,7 @@ namespace WebMapTester
 						portalItem.Extent = extent;
 						try
 						{
-							await portalItem.UpdateAsync(json);
+							await portalItem.UpdateAsync(new ArcGISPortalItemContent(json), cts.Token);
 							//MessageBox.Show(string.Format("Item updated user {0}: {1}", portal.CurrentUser.FullName, portalItem.Title));
 							if (!cts.IsCancellationRequested)
 								await DisplayWebMap(portalItem);
@@ -688,7 +689,7 @@ namespace WebMapTester
 
 						try
 						{
-							ArcGISPortalItem item = await portal.AddItemAsync(portalItem, json);
+							ArcGISPortalItem item = await portal.AddItemAsync(portalItem, new ArcGISPortalItemContent(json));
 							//MessageBox.Show(string.Format("Item created user {0}: {1}", portal.CurrentUser.FullName, portalItem.Title));
 							if (!cts.IsCancellationRequested)
 								await DisplayWebMap(item);

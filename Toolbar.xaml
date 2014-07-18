@@ -67,7 +67,7 @@
                 </Button>
                 <Separator Width="5" HorizontalAlignment="Stretch" />
 
-                <Button Command="{Binding WebMapSelector.SelectBaseMapCommand}" Style="{StaticResource ActiveButtonStyle}" ToolTip="Selects a base map.">
+                <Button Command="{Binding WebMapSelector.SelectBasemapCommand}" Style="{StaticResource ActiveButtonStyle}" ToolTip="Selects a base map.">
                     <Image Source="/WebMapTester;component/Images/Basemap32_B.png" />
                 </Button>
                 <Button Command="{Binding WebMapSelector.NewWebMapCommand}"

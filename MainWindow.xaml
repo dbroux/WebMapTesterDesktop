@@ -53,12 +53,23 @@
         <local:Toolbar DataContext="{Binding ElementName=mainWindow}" />
 
         <Grid Grid.Row="1">
-            <esri:MapView Map="{Binding WebMapViewModel.Map}" WrapAround="True" />
+            <esri:MapView x:Name="MyMapView" Map="{Binding WebMapViewModel.Map}" WrapAround="True" />
 
             <local:WebMapEditor x:Name="webMapEditor" Width="300"
                                 Margin="3,20,3,3" HorizontalAlignment="Right"
                                 VerticalAlignment="Top" Background="#3FFFFFFF"
                                 DataContext="{Binding WebMapViewModel}" />
+            <TreeView x:Name="MySelector"  ItemsSource="{Binding WebMapViewModel.Map.Layers}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding ChildLayers}" d:DataContext="{d:DesignInstance esri:GroupLayer}">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsVisible, Mode=TwoWay}" ToolTipService.ToolTip="Toggle Layer Visibility" />
+                            <Slider Minimum="0" Maximum="1" Value="{Binding Opacity, Mode=TwoWay}"></Slider>
+                            <TextBlock Margin="2" VerticalAlignment="Center" Text="{Binding DisplayName}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
 
             <!--  Legend  -->
             <Border x:Name="legend" MaxWidth="300"
@@ -76,8 +87,16 @@
                                      Scale="{Binding WebMapViewModel.Map.Scale}" />
 
             <local:WebMapSelector x:Name="webMapSelector" Background="White"
-                                  BingToken="{Binding BingToken}" Foreground="Black"
+                                  Foreground="Black"
                                   WebMapViewModel="{Binding WebMapViewModel, Mode=TwoWay}" />
+            <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                <!--BingToken="{Binding BingToken}"-->
+
+                <TextBlock  Text="{Binding Scale, ElementName=MyMapView, Mode=OneWay, StringFormat='Scale: {0}'}" FontSize="16"/>
+                <Button Content="Remove Binding" Click="RemoveBinding_OnClick"/>
+            <Button Content="Set Binding" Click="SetBinding_OnClick"/>
+            </StackPanel >
+
         </Grid>
 
     </Grid>
