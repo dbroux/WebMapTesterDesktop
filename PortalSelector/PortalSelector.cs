@@ -65,11 +65,11 @@ namespace WebMapTester
 			if (!string.IsNullOrEmpty(portalInfo.OAuthClientId))
 			{
 				// Server needs to be registered to use OAuth
-				IdentityManager.Current.RegisterServer(new IdentityManager.ServerInfo
+				IdentityManager.Current.RegisterServer(new ServerInfo
 				{
 					ServerUri = portalInfo.Url,
-					TokenAuthenticationType = IdentityManager.TokenAuthenticationType.OAuthAuthorizationCode,
-					OAuthClientInfo = new IdentityManager.OAuthClientInfo
+					TokenAuthenticationType = TokenAuthenticationType.OAuthAuthorizationCode,
+					OAuthClientInfo = new OAuthClientInfo
 					{
 						ClientId = portalInfo.OAuthClientId,
 						RedirectUri = "urn:ietf:wg:oauth:2.0:oob"
@@ -82,7 +82,7 @@ namespace WebMapTester
 				var serverInfo = IdentityManager.Current.FindServerInfo(portalInfo.Url);
 				if (serverInfo != null)
 				{
-					serverInfo.TokenAuthenticationType = IdentityManager.TokenAuthenticationType.ArcGISToken;
+					serverInfo.TokenAuthenticationType = TokenAuthenticationType.ArcGISToken;
 				}
 			}
 		}

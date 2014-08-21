@@ -146,7 +146,7 @@ namespace WebMapTester
 			else
 			{
 				// Sign In
-				IdentityManager.Credential crd = null;
+				Credential crd = null;
 
 				if (ArcGISPortal == null || ArcGISPortal.ArcGISPortalInfo == null)
 				{
@@ -160,7 +160,7 @@ namespace WebMapTester
 					// OK we need a token to act as 'SignedIn'
 					try
 					{
-						crd = await Challenge(new IdentityManager.CredentialRequestInfo{ServiceUri = ArcGISPortal.Uri.AbsoluteUri}); 
+						crd = await Challenge(new CredentialRequestInfo{ServiceUri = ArcGISPortal.Uri.AbsoluteUri}); 
 					}
 					catch { }
 					if (crd != null)
@@ -174,16 +174,16 @@ namespace WebMapTester
 			IsBusy = false;
 		}
 
-		private Task<IdentityManager.Credential> Challenge(IdentityManager.CredentialRequestInfo info)
+		private Task<Credential> Challenge(CredentialRequestInfo info)
 		{
 			var im = IdentityManager.Current;
 
 			var serverInfo = im.FindServerInfo(info.ServiceUri);
 
-			if (serverInfo != null && serverInfo.TokenAuthenticationType != IdentityManager.TokenAuthenticationType.ArcGISToken)
+			if (serverInfo != null && serverInfo.TokenAuthenticationType != TokenAuthenticationType.ArcGISToken)
 			{
 				// OAuth2 case --> call generateToken which will show up the authorization page
-				return im.GenerateCredentialAsync(info.ServiceUri, info.GenerateTokenOptions).ContinueWith(t => (IdentityManager.Credential)t.Result);
+				return im.GenerateCredentialAsync(info.ServiceUri, info.GenerateTokenOptions).ContinueWith(t => (Credential)t.Result);
 			}
 			else
 			{

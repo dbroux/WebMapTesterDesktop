@@ -33,14 +33,14 @@ namespace WebMapTester
 
 				var serverInfo = im.FindServerInfo(info.ServiceUri);
 
-				bool needPortalToken = info.AuthenticationType == IdentityManager.AuthenticationType.Token && serverInfo != null && !string.IsNullOrEmpty(serverInfo.OwningSystemUri);
+				bool needPortalToken = info.AuthenticationType == AuthenticationType.Token && serverInfo != null && !string.IsNullOrEmpty(serverInfo.OwningSystemUri);
 				if (needPortalToken)
 				{
 					// Don't change portal login on the fly. The user has to log out first.
 					var crd = im.FindCredential(info.ServiceUri);
 					if (crd != null) // already logged
 					{
-						var tcs = new TaskCompletionSource<IdentityManager.Credential>();
+						var tcs = new TaskCompletionSource<Credential>();
 						// We are logged but have no access to this resource
 						tcs.SetException(new Exception("You have no access to this resource."));
 						return tcs.Task;
