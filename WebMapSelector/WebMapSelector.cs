@@ -372,8 +372,8 @@ namespace WebMapTester
 				message += webMapLayer.Title;
 			else if (!string.IsNullOrEmpty(webMapLayer.Id))
 				message += webMapLayer.Id;
-			else if (!string.IsNullOrEmpty(webMapLayer.Type))
-				message += webMapLayer.Type;
+			else
+				message += webMapLayer.LayerType;
 
 			message += ": " + error.Message;
 			return message;
@@ -654,7 +654,7 @@ namespace WebMapTester
 				ArcGISPortal portal = webMapViewModel.ArcGISPortal;
 				string json = webMapViewModel.WebMap.ToJson();
 				var extent = webMapViewModel.Map.InitialViewpoint.TargetGeometry as Envelope; // todo manage point and scale case
-				if (extent != null && !SpatialReference.AreEqual(SpatialReferences.Wgs84, extent.SpatialReference))
+				if (extent != null && !SpatialReferences.Wgs84.IsEqual(extent.SpatialReference))
 				{
 					extent = GeometryEngine.Project(extent, SpatialReferences.Wgs84) as Envelope;
 				}

@@ -72,7 +72,7 @@ namespace WebMapTester
 				webMapViewModel.Basemap = new Basemap();
 			if (webMapViewModel.Basemap.Layers == null)
 				webMapViewModel.Basemap.Layers = new ObservableCollection<WebMapLayer>();
-			var webMapLayer = new WebMapLayer { ShowLegend = false, Type = "OpenStreetMap"};
+			var webMapLayer = new WebMapLayer { ShowLegend = false, LayerType = WebMapLayerType.OpenStreetMap};
 			webMapViewModel.Basemap.Layers.Add(webMapLayer);
 			//ShowDetails(webMapLayer);
 		}
