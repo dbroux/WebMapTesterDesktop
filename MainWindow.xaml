@@ -6,6 +6,7 @@
         xmlns:esritoolkit="clr-namespace:Esri.ArcGISRuntime.Toolkit.Controls;assembly=Esri.ArcGISRuntime.Toolkit"
         xmlns:local="clr-namespace:WebMapTester"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:primitives="clr-namespace:Esri.ArcGISRuntime.Toolkit.Controls.Primitives;assembly=Esri.ArcGISRuntime.Toolkit"
         x:Name="mainWindow" Title="WebMap Tester"
         mc:Ignorable="d">
     <Window.Resources>
@@ -17,7 +18,7 @@
             <Setter Property="LayerTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <StackPanel Margin="0,4" Orientation="Horizontal">
+                        <StackPanel Margin="0,4" Orientation="Horizontal" d:DataContext="{d:DesignInstance primitives:LayerItemViewModel}">
                             <ToolTipService.ToolTip>
                                 <StackPanel MaxWidth="400">
                                     <TextBlock FontWeight="Bold" Text="{Binding ParentLabel}" TextWrapping="Wrap" />
@@ -27,14 +28,21 @@
                                     <TextBlock Text="{Binding MaximumScale, StringFormat='MaximumScale 1:{0}'}" TextWrapping="Wrap" />
                                 </StackPanel>
                             </ToolTipService.ToolTip>
-                            <CheckBox IsChecked="{Binding IsVisible, Mode=OneWay}" IsEnabled="False" />
-                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Label}" />
+                            <Grid>
+                                <!--  Two overlapping checkboxes, the second checkbox is grayed when the layer is not visible  -->
+                                <CheckBox VerticalAlignment="Center" Content="{Binding Label}" IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
+                                <CheckBox VerticalAlignment="Center" Content="{Binding Label}"
+                                          IsChecked="{Binding IsEnabled}"
+                                          IsEnabled="{Binding IsVisible}" IsHitTestVisible="False" />
+                            </Grid>
+                            <!--<CheckBox IsChecked="{Binding IsEnabled, Mode=OneWay}" IsEnabled="False" Content="{Binding Label}"  FontWeight="Bold"/>-->
+                            <!--<TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Label}" />-->
                         </StackPanel>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
 
-            <!--  Will use LayerItemTemplate  -->
+            <!--  Will use LayerTemplate  -->
             <Setter Property="MapLayerTemplate" Value="{x:Null}" />
         </Style>
 
@@ -79,7 +87,7 @@
                     BorderThickness="2" CornerRadius="5"
                     Padding="2" Visibility="Collapsed">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                    <esritoolkit:Legend Layers="{Binding WebMapViewModel.Map.Layers}" Scale="{Binding WebMapViewModel.Map.Scale}" />
+                    <esritoolkit:Legend Layers="{Binding WebMapViewModel.Map.Layers}" Scale="{Binding Scale, ElementName=MyMapView}" />
                 </ScrollViewer>
             </Border>
             <esritoolkit:Attribution HorizontalAlignment="Right" VerticalAlignment="Bottom"
