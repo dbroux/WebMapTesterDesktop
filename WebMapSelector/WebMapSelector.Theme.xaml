@@ -53,7 +53,7 @@
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="1" Direction="-45" ShadowDepth="2" />
                                     </Border.Effect>
-                                    <local:SecuredImage MaxWidth="120" MaxHeight="80" ImageUri="{Binding ThumbnailUri}" HttpMessageHandler="{Binding ArcGISPortal.HttpMessageHandler}" />
+                                    <local:SecuredImage MaxWidth="120" MaxHeight="80" ImageUri="{Binding ThumbnailUri}" />
                                 </Border>
                             </Grid>
                             <TextBlock Grid.Row="0" Grid.Column="1"

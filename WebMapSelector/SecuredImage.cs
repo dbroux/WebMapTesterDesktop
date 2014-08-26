@@ -39,31 +39,6 @@ namespace WebMapTester
 			var task = ((SecuredImage)d).UpdateImageSource();
 		}
 
-
-		/// <summary>
-		/// Gets or sets the HTTP message handler.
-		/// </summary>
-		/// <value>
-		/// The HTTP message handler.
-		/// </value>
-		public HttpMessageHandler HttpMessageHandler
-		{
-			get { return (HttpMessageHandler)GetValue(HttpMessageHandlerProperty); }
-			set { SetValue(HttpMessageHandlerProperty, value); }
-		}
-
-		/// <summary>
-		/// The HTTP message handler property
-		/// </summary>
-		public static readonly DependencyProperty HttpMessageHandlerProperty =
-			DependencyProperty.Register("HttpMessageHandler", typeof(HttpMessageHandler), typeof(SecuredImage), new PropertyMetadata(OnHttpMessageHandlerChanged));
-
-
-		private static void OnHttpMessageHandlerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var task = ((SecuredImage)d).UpdateImageSource();
-		}
-
 		private async Task UpdateImageSource()
 		{
 			ImageSource source;
@@ -74,7 +49,7 @@ namespace WebMapTester
 				try
 				{
 					//var httpClient = ArcGISHttpClient.CreateHttpClient(ImageUri);
-					var httpClient = HttpMessageHandler == null ? new ArcGISHttpClient() :new ArcGISHttpClient(HttpMessageHandler);
+					var httpClient = new ArcGISHttpClient();
 
 					Stream streamSource = await httpClient.GetStreamAsync(ImageUri);
 					var bitmapImage = new BitmapImage();
